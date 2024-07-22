@@ -1,0 +1,73 @@
+﻿
+CREATE DATABASE ado_db
+
+USE ado_db
+
+-------------------------------------------------
+
+CREATE TABLE employee_tbl (
+id INT PRIMARY KEY IDENTITY,
+name VARCHAR(100),
+gender VARCHAR(100),
+age INT,
+salary INT,
+city VARCHAR(100)
+)
+
+SELECT * FROM employee_tbl
+
+-------------------------------------------------
+
+CREATE PROCEDURE sp_GetEmployees
+AS
+BEGIN
+	SELECT * FROM employee_tbl
+END
+
+GO
+
+CREATE PROCEDURE sp_AddEmployee (@name varchar(50), @gender varchar(50), @age int, @salary int, @city varchar(50))
+AS
+BEGIN
+	INSERT INTO employee_tbl (name,gender,age,salary,city) VALUES (@name,@gender,@age,@salary,@city)
+END
+
+GO
+
+CREATE PROCEDURE sp_UpdateEmployee (@id int, @name varchar(50), @gender varchar(50), @age int, @salary int, @city varchar(50))
+AS
+BEGIN
+	UPDATE employee_tbl set name=@name,gender=@gender,age=@age,salary=@salary,city=@city where id=@id
+END
+
+GO
+
+CREATE PROCEDURE sp_DeleteEmployee (@id int)
+AS
+BEGIN
+	DELETE employee_tbl where id=@id
+END
+
+-------------------------------------------------------------------------------------------
+
+select id,name,gender,age,salary,city from employee_tbl
+exec sp_GetEmployees
+
+-------------------------------------------------------------------------------------------
+
+insert into employee_tbl (name,gender,age,salary,city) values ('Vishal','Male',28,22000,'Thane')
+exec sp_AddEmployee 'Vishal','Male',28,22000,'Thane'
+
+-------------------------------------------------------------------------------------------
+
+update employee_tbl set name='Vishal',gender='Male',age=28,salary=22000,city='Thane' where id=1
+exec sp_UpdateEmployee 1,'Vishal','Male',28,22000,'Thane'
+
+-------------------------------------------------------------------------------------------
+delete from employee_tbl where id=1
+exec sp_DeleteEmployee 1
+
+-------------------------------------------------------------------------------------------
+
+select * from employee_tbl where id=1
+
